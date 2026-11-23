@@ -21,11 +21,11 @@ Przed pierwszym uruchomieniem plik wynikowy jeszcze nie istniał. Skrypt zakońc
 
 ## 3. Rekord CSV a wiersze treści wiadomości
 
-Wybrany fragment to `project/README.md`, część **Files**, akapit rozpoczynający się od „One CSV record represents one email”. W `exercise.csv` sprawdzono rekord `exercise-001`. Pole `message_id` wskazuje wiadomość i jej oryginał `data/raw/exercise-001.eml`. Pole `text` zawiera temat i treść. W tym rekordzie zajmuje 22 wiersze. Pole `label` zawiera etykietę ze zbioru danych, początkowo `ham`.
+Wybrany fragment dotyczy struktury rekordów CSV. W `exercise.csv` sprawdzono rekord `exercise-001`. Pole `message_id` identyfikuje wiadomość i pozwala powiązać ją z oryginałem `data/raw/exercise-001.eml`. Pole `text` zawiera temat i treść, które w tym rekordzie zajmują łącznie 22 wiersze. W polu `label` pierwotnie zapisano `ham`. [Polska instrukcja projektu](project/README.md#pliki-projektu) · [Oryginalny fragment odczytany w sesji](https://github.com/Murzynator04/agents-ml-course-2026/blob/d108784e3bfe944fb1d1b7772a74719327e13cd6/lab1/project/README.md#files)
 
 **Własne wyjaśnienie i przewidywanie.** Jeden rekord CSV odpowiada jednej wiadomości e-mail. Gdy plik ma dwa rekordy, a pierwsza wiadomość zawiera trzy wiersze tekstu, skrypt powinien policzyć dwie wiadomości, a nie cztery.
 
-Po zapisaniu przewidywania przygotowano osobny syntetyczny CSV poza katalogiem `project/`. Pierwszy rekord miał trzy wiersze tekstu i etykietę `ham`, a drugi jeden wiersz i etykietę `spam`. Z katalogu `project/` wykonano polecenie:
+Po zapisaniu przewidywania przygotowano osobny plik CSV z danymi syntetycznymi poza katalogiem `project/`. Pierwszy rekord zawierał trzy wiersze tekstu i etykietę `ham`, a drugi jeden wiersz i etykietę `spam`. Polecenie wykonano z katalogu `project/`.
 
 ```powershell
 py -3 describe_data.py --data ../proba-dwa-rekordy/wiadomosci.csv --out ../proba-dwa-rekordy/podsumowanie.json
@@ -39,13 +39,13 @@ Proces zwrócił kod `0`, a odczyt raportu próby potwierdził 2 wiadomości, w 
 py -3 -m unittest discover -s tests -v
 ```
 
-Test `test_cli_writes_expected_counts` zakończył się kodem `0`. Terminal wyświetlił `Ran 1 test` i `OK`. Test korzystał z `tests/fixtures/messages.csv` z trzema syntetycznymi wiadomościami o wielowierszowej treści. Sprawdził kod zakończenia skryptu, zapis i odczyt JSON, ścieżkę wejścia i ustalone wcześniej liczebności 3 ogółem, 2 `ham`, 1 `spam`. Wynik testu dotyczy tej próbki i raportu w katalogu tymczasowym. Raport z `exercise.csv` zweryfikowano osobno na podstawie jego wejścia i zapisanej treści.
+Test `test_cli_writes_expected_counts` zakończył się kodem `0`. Komunikaty `Ran 1 test` i `OK` oznaczają, że wykonano jeden test i przeszedł on pomyślnie. Test sprawdził kod zakończenia skryptu, zapis i odczyt JSON, ścieżkę wejścia oraz ustalone wcześniej liczebności. Dane w `tests/fixtures/messages.csv` obejmują trzy syntetyczne wiadomości o wielowierszowej treści, w tym 2 `ham` i 1 `spam`. Wynik dotyczy tej próbki i raportu zapisanego w katalogu tymczasowym. Raport z `exercise.csv` zweryfikowano osobno na podstawie danych wejściowych i treści zapisanego pliku.
 
 ## 5. Zmiana etykiety i drugi raport
 
 W `data/exercise.csv` zmieniono `exercise-001` z `ham` na `spam` na potrzeby ćwiczenia. Porównanie rekordów potwierdziło, że była to jedyna zmiana pola. Po samej edycji JSON był bajtowo identyczny z pierwszym raportem, a suma SHA-256 aktualnego CSV już się różniła. Zapisany raport opisywał więc poprzednią wersję danych.
 
-Przed drugim uruchomieniem agent przewidział spadek liczby `ham` o 1, wzrost liczby `spam` o 1 i tę samą liczbę wiadomości ogółem. Wybrano powtórzenie polecenia z punktu 2, żeby skrypt ponownie przeliczył bieżące dane, a następnie odczyt JSON i porównanie jego ścieżki wejściowej, sumy SHA-256 oraz liczebności z aktualnym CSV. Świeże uruchomienie zakończyło się kodem `0`. Nowy raport zawierał sumę SHA-256 aktualnego pliku i potwierdził przewidywanie.
+Przed drugim uruchomieniem agent przewidział spadek liczby `ham` o 1, wzrost liczby `spam` o 1 i tę samą liczbę wiadomości ogółem. Ponownie wykonano polecenie z punktu 2, aby przeliczyć bieżące dane. Następnie odczytano JSON i porównano jego ścieżkę wejściową, sumę SHA-256 oraz liczebności z aktualnym CSV. Proces zakończył się kodem `0`. Nowy raport zawierał sumę SHA-256 aktualnego pliku i potwierdził przewidywanie.
 
 | Liczebność | Przed zmianą | Przewidywanie | Po ponownym uruchomieniu |
 | --- | ---: | ---: | ---: |
